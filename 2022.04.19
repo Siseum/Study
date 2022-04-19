@@ -1,0 +1,49 @@
+# 2022 04 19 Study
+
+1. HashSet
+- HashSet 이란 객체를 저장하는 자료구조이며 중복된 객체를 저장하지 않는다.
+- 객체 중복 여부를 재정의 하기 위해 equals()와 hashCode()를 재정의 한다.
+
+2. TreeSet
+- 객체의 정렬을 위해 사용하는 클래스이다.
+- Set이랑 마찬가지로 중복된 객체의 저장을 허용하지 않고 오름차순 / 내림차순으로 객체를 정렬할 수 있다
+- 비교 대상이 되는 객체(자료를 저장하는 객체)에 Comparable이나 Comparator 인터페이스를 구현해야 TreeSet에 추가될 수 있다.
+
+- Comparable이란 자기자신의 객체와 다른 객체를 비교할때 사용하는 인터페이스이다
+- Comparable 인터페이스를 구현하면 compareTo() 함수를 재정의 해야된다.
+  예) implements Comparable<Member>
+      public int compareTo(Member member)
+      {
+         ...
+      }
+
+- Comparator 이란 두 매개변수 객체를 비교할때 사용하는 인터페이스이다
+- Comparator 인터페이스를 구현하면 compare() 함수를 재정의해야된다.
+  예) implements Comparator<String>
+      public int compare(String s1, String s2)
+      {
+         return (s1.compareTo(s2)) * (-1);
+      }
+
+- compareTo() 함수나 compare() 함수는 두 대상을 비교하여 먼저오는 오름차순으로 정렬할려면 양수 /
+  내림차순으로 정렬할려면 음수 / 같으면 0을 리턴하도록 한다.
+  
+  
+3. HashMap
+- Key와 Value로 자료들을 관리하는 자료구조이다.
+- 검색을 위해 사용하는 자료구조이다.
+- Key가 되는 객체는 중복될 수 없고 객체의 유일성을 비교하기 위해 equals(), hashCode()를 오버라이딩 하여 재구현해야한다.
+  예) Iterator<Integer> ir = hashMap.KeySet().iterator();
+      while(ir.hasNext())
+      {
+         int key = ir.next();
+         Member member = hashMap.get(key);
+      }
+  
+  
+4. TreeMap
+- Map 인터페이스를 구현한 클래스이고 Key에 대한 정렬이 가능하다.
+- Key가 되는 클래스에 Comparable이나 Comparator 인터페이스를 구현해야지만
+  Key-Value 쌍의 자료구조를 Key값으로 정렬이 되므로 Comparable이나 Comparator 인터페이스를 오버라이딩해야 된다.
+
+
