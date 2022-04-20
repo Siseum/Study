@@ -22,7 +22,7 @@
  
 2. try-with resource
 - 예외처리를 해야될 리소스를 try() 내부 안에서 선언하면 try 블록에서 열린 리소스는 정상이든 예외든 
-  close() 함수가 자동으로 실행된다 (해당 리소스는 AutoClosable 인터페이스를 구현해야된다)
+  close() 함수가 자동으로 실행된다 (해당 리소스는 AutoCloseable 인터페이스를 구현해야된다)
   예)
   try(FileInputStream fis = new FileInputStream("input.txt"))
   {
