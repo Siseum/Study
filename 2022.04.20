@@ -1,0 +1,111 @@
+# 2022 04 20 Study
+
+1. try-catch
+- try-catch 문법은 자바에서 에러 예외 처리를 하는 문법이며
+  try 블록 안에는 예외가 발생할 수 있는 부분을 작성하며 
+  catch 블록 안에는 예외가 발생했을때 예외를 처리하는 부분을 작성한다
+- finally 문법은 try 블록이 실행하고 나서 항상 반드시 실행되는 블록이다
+  (try 블록 안에서 return을 해도 반드시 실행되는 부분이다)
+  
+예) try
+    {
+      ...
+    }
+    catch(IOException e)
+    {
+      ...
+    }
+    finally
+    {
+      ...
+    }
+ 
+2. try-with resource
+- 예외처리를 해야될 리소스를 try() 내부 안에서 선언하면 try 블록에서 열린 리소스는 정상이든 예외든 
+  close() 함수가 자동으로 실행된다 (해당 리소스는 AutoClosable 인터페이스를 구현해야된다)
+  예)
+  try(FileInputStream fis = new FileInputStream("input.txt"))
+  {
+      ...
+  }
+  이렇게 try() 내부에 리소스를 선언하면 자동으로 close() 함수가 호출된다
+  
+3. 예외처리 미루기
+- 자바에서는 예외를 try-catch 문법으로 해결할 수 있고 
+  throws Exception 문법으로 예외를 호출한 쪽으로 예외를 처리하도록 떠넘길 수 있다
+- throws 문법은 클래스 뒤에 throws 에러 를 작성하면 된다.
+
+- 모든 에러의 최상위 클래스는 Exception 클래스 이므로 처리하려는 에러 중에서 Exception 에러가 맨 마지막에 처리되도록 해야된다
+ 
+
+4. 사용자 정의 예외 클래스
+-  자바에서 사용자가 예외 클래스를 정의할 수 도 있는데 
+   정의할려는 예외클래스는 Exception 클래스를 상속받아 사용자 정의 예외 클래스를 만든다.
+   
+5. 입출력 스트림
+- 입출력 스트림이란 입출력에 관한 자료의 연결 흐름을 의미한다.
+- 입력 스트림이란 대상으로부터 읽어드리는 스트림이다
+- 출력 스트림이란 대상으로 자료를 출력하는 스트림이다.
+
+- stream 은 byte 단위로 입출력을 담당하며
+  Reader, Writer는 문자 단위로 입출력을 담당한다.
+  
+- FileInputStream은 바이트 단위로 입력을 담당하며 / FileOutputStream은 바이트 단위로 출력을 담당한다.
+- FileInputStream/FileOuptStream 으로 문자열을 읽어들이고 바로 출력하면 글자가 깨지는데
+  문자열은 특정 조합으로 읽고 써야되는데 FileInputStream / FileOutputStream은 바이트 그대로 읽고 쓰므로 글자가 깨진다
+  
+- FileReader는 문자 단위로 입력을 담당하며 / FileWriter는 문자 단위로 출력을 담당한다.
+
+- 기반 스트림이란 대상에 직접 자료를 읽고 쓰고하는 스트림이다
+- 보조 스트림은 기반 스트림에 추가 기능을 더하는 스트림이다
+  보조 스트림 그 자체에는 읽고 쓰고 하는 기능이 없으므로 반드시 기반 스트림이 있어야한다.
+  
+- InputStreamReader는 바이트 단위의 읽은 자료를 문자로 변환해주는 보조 스트림이다.
+- OutputStreamWriter는 바이트 단위의 자료를 문자로 출력해주는 보조 스트림이다.
+
+- BufferedReader는 문자를 읽을 때 배열로 한꺼번에 읽을수 있는 보조 스트림이다
+- BufferedWriter는 문자를 쓸 때 배열로 한꺼번에 쓸 수 있는 보조 스트림이다 
+
+- BufferedInputStream은 byte 단위의 파일을 한꺼번에 읽어들이는 보조 스트림이다.
+- BufferedOutputStream은 byte 단위의 파일을 한꺼번에 출력하는 보조 스트림이다.
+
+
+6. 직렬화
+- 직렬화란 인스턴스의 정보를 파일로 저장하거나 네트워크로 전송하고 이를 다시 복원하는 방식
+- 자바에서 직렬화는 보조 스트림으로 이루어진다
+- 직렬화를 할때는 전달할려는 객체에 Serializable 인터페이스를 구현해야된다.
+  (Serializable 인터페이스는 구현할 코드가 없는데 이를 마크 인터페이스라고 한다)
+
+- 프로그래머가 직접 직렬화 방식을 설정할 수 도 있는데
+  그럴려면 직렬화 할려는 객체에 Externalizable 인터페이스를 구현해야된다.
+- Externalizable 인터페이스는 writeExternal() 메서드와 readExternal() 메서드를 오버라이딩 해야된다.
+  (writeExternal() 메서드에서는 writeUTF() 메서드를 / readExternal() 메서드에서는 readUTF() 메서드를 사용한다)
+  
+7. 파일 클래스
+- File 클래스는 파일의 개념을 추상화한 클래스이다
+- 파일의 읽고 쓰는 기능은 없으며 파일의 경로 위치 정보등을 갖고 있다
+  (파일의 읽고 쓰는 기능은 입출력 스트림을 이용해야된다)
+  
+- RandomAccessFile 클래스는 파일 포인터로 파일의 입력과 출력을 담당하는 클래스이다
+- 파일 포인터로 입출력을 담당하지만 입출력을 할때마다 파일 포인터의 위치가 달라지므로
+  seek() 함수 등으로 파일 포인터의 위치를 조정해서 파일 읽고 쓰기를 해야된다.
+  
+ 
+8. 데코레이터 패턴
+- 데코레이터 패턴은 기본 기능에 추가 기능을 유연하게 첨가하는 패턴이다.
+- 데코레이터 패턴은 객체에 동적으로 기능을 쉽게 추가할 수 있다는 장점이 있으나 
+  겹겹히 에워싸는 사용 방법때문에 구조가 복잡해질 수 있다는 문제점이 있다.
+  
+- 데코레이터 패턴은 Componenent / Concrete Component / Decorator로 구성되어 있다
+- Component는 Concrete Component나 Decorator가 구현해야될 기능을 정의한 인터페이스나 추상 클래스이다.
+
+- Concrete Component는 기능 추가를 적용시킬 실제 객체이다.
+  Concrete Component가 실제 처리해야되는 메서드를 구현한다.
+
+- Decorator는 기능을 정의한 객체이다.
+  Decorator에서 기존에 있는 Concrete Component나 Decorator를 생성자에서 인자로 전달받아 생성한다.
+  Decorator에 있는 메서드를 호출할때 기존에 있는 Concrete Component나 Decorator의 메서드를 호출하고 
+  지신의 Decorator에 있는 메서드를 호출하는 식으로 기능 추가를 구현한다. 
+  
+  
+  
