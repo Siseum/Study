@@ -52,6 +52,8 @@
 - 인터페이스의 일관성을 지키고 클라이언트와 서버가 독립적으로 개선될 수 있어야 된다.
 - 특정한 기능을 서버로 부터 클라이언트가 전달 받아 코드를 실행할 수 있어야한다.
 
+- API란 응용 프로그램에서 사용할 수 있도록 운영체제나 프로그래밍 언어가 제공하는 기능을 제어할 수 있게 만든 인터페이스를 의미한다.
+
 8. RESTful 조건
 - 웹 기반의 REST에서 리소스에 접근할때 URI를 사용한다.
 - 리소스 조작을 할때는 리소스 그 자체를 전달하는것이 아닌 메세지로 데이터를 전달한다.
@@ -106,3 +108,50 @@
 - Path Variable / Query Parameter
   Path Variable은 경로를 변수로 사용하는것을 의미하며
   Query Parmeter는 경로에 key와 value의 형태로 데이터를 제공하는것을 의미한다. 
+  
+11. Annotation
+- @RestController) Rest API를 설정한다
+- @RequestMapping) 리소스를 설정한다
+- @GetMapping) Get Resource를 설정한다
+- @RequestParam) URL 쿼리 정보를 얻어온다
+- @PathVariable) URL 변수 경로의 정보를 얻어온다 
+
+- @PostMapping) Post Resource를 설정한다
+  @RequestBody) Request Body 부분을 얻어온다.
+  @JsonProperty) Json 이름을 설정한다.
+  @JsonNaming) 해당 클래스의 Json 이름 규칙을 설정한다.
+  
+- @PutMapping) Put Resource를 설정한다.
+
+- @DeleteMapping) Delete Resource를 설정한다.
+
+- @ResponseBody) RestController가 아닌 곳(Controller)에서 Json으로 데이터를 반환할때 사용한다.
+  
+12. MVC 패턴
+- MVC 패턴이란 Model, View, Controller의 약자이며 각 레이어간 기능을 구분하는데 중점을 둔 디자인 패턴입니다.
+- Model은 데이터 관리 및 비즈니스 로직을 처리하는 부분이다
+- View는 비즈니스 로직의 처리 결과를 통해 인터페이스가 표현되는 구간입니다.
+- Controller는 사용자의 요청을 처리하고 Model과 View를 중개하는 역할을 합니다.
+
+13. @Controller / @RestController
+- @Controller는 view를 반환하기 위한 어노테이션을 의미한다.
+  @Controller를 사용하면서 Data를 반환하는 경우도 있는데 
+  @ResponseBody 어노테이션을 활용하여 Json 형태로 데이터를 반환할 수 있게 된다.
+  
+- @RestController는 @Controller + @ResponseBody를 합친 문법이며
+  Json 형태로 객체 데이터를 반환하는것을 의미한다.
+
+14. DAT/DTO/VO
+- DAO) Data Access Object는 데이터 베이스 data에 접근하기 위한 객체이다
+- DTO) Data Transfer Object는 계층 간 데이터를 교환하기 위해 사용하는 객체
+- VO) Value Object 실제 데이터만을 저장하는 객체를 의미한다.
+
+15. ObjectMapper
+- Text를 Object로 Object를 Text로 변환할 경우 ObjectMapper 클래스를 사용한다
+- objectMapper.writeAsValueAsString() 메서드를 호출할 경우 Object에서 String으로 변환된다.
+- objectMapper.readValue() 메서드를 호출할 경우 String에서 Object로 변환된다.
+
+- wirteAsValueAsString() 메서드는 해당 클래스에 get() 메서드가 있어야된다.
+- readValue() 메서드는 기본 생성자가 있어야 된다.
+
+    
