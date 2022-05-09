@@ -88,6 +88,12 @@
   @Column 어노테이션은 데이터 베이스의 열과 객체의 맴버변수와 매핑하는 어노테이션이다
   (@Column name = 'name' 어노테이션은 데이터 베이스의 name 열과 매핑하는 어노테이션이다)
   @Enumerated 어노테이션은 enum 타입과 매핑한다
+  
+  (@Enumarated 어노테이션을 사용할때 EnumType.STRING 옵션을 사용해야된다.
+   EnumType.ORDINAL 속성은 enum의 순서를 데이터베이스에 저장하지만
+   문제점은 EnumType의 값이 변경될 경우 순서도 변경되므로 문제가 발생한다
+   그러므로 EnumType.STRING 옵션을 사용해야된다)
+   
   @Temporal 어노테이션은 날짜 타입과 매핑한다.
   (@Temporal 어노테이션에는 DATE(날짜), TIME(시간), TIMESTAMP(날짜와 시간)가 있다)
   @Lob 어노테이션은 varchar보다 큰 데이터를 넣고 싶을때 사용하는 어노테이션이다
