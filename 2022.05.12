@@ -104,6 +104,7 @@
   JPA에서는 SELECT m FROM Member m LEFT [OUTER] JOIN m.team t 이런식으로 Outer Join을 만든다.
   
   세타 조인이란 결합조건에 만족하는 두 테이블의 데이터를 갖고 카테이션 곱으로 결합하여 새로운 테이블로 만드는 Join을 의미한다.
-  select count(m) from Member m, Team t where m.username = t.name 이런식으로 세타 조인을 만든다.
+  select m from Member m, Team t where m.username = t.name 이런식으로 세타 조인을 만든다.
   
 
+  
