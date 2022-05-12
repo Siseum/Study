@@ -94,7 +94,7 @@
 
   Inner Join이란 결합조건을 만족하는 데이터만을 선택해 두 테이블을 결합할때 사용하는 문법이다
   (참조하려는 두 테이블의 교집합을 의미한다)
-  Inner Join에서 두 테이블 간 조인 조건을 만족하지 않는 행은 생략되어서 결과가 반환된다
+  Inner Join에서 두 테이블 간 조인 조건을 만족하지 않는 행은 생략되어서 결과가 반환된다  
   
   JPA에서는 SELECT m FROM Member m [INNER] JOIN m.team t 이런 식으로 Inner Join을 만든다
   
