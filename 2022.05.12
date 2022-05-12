@@ -1,0 +1,71 @@
+# 2022 05 12 Study
+
+1 JPQL 
+- JPQL(Java Persistence Query Language)이란 SQL을 추상화한 객체 지향 쿼리 언어이다
+  SQL 쿼리는 데이터 베이스 테이블을 대상으로 접근하지만
+  JPA는 엔티티 객체를 중심으로 개발하므로 JPQL이라는 객체 지향 쿼리 언어를 사용하여
+  엔티티 객체 중심으로 개발한다.
+  
+  JPQL은 SQL을 추상화한 객체 지향 쿼리 언어이므로 특정 데이터 베이스 SQL에 의존하지 않는다.
+  JPQL은 EntityManager를 통해 실행한다.
+  
+- QueryDSL은 쿼리를 자바 코드로 작성할 수 있게 해주는 기술이다
+  JPQL의 빌더 역할을 한다
+  컴파일 시점에 문법 오류를 찾을수 있고 동적 쿼리 작성이 편리하다는 장점이 있다
+  
+- 네이티브 SQL이란 JPA가 제공하는 SQL을 직접 사용하는 기능이다.
+  (JPA를 이용하여 프로그래머가 작성한 SQL문장을 직접 DB에 전송하는 기능이다)
+  JPQL로 해결할 수 없는 특정 데이터 베이스의 의존적인 기능을 사용할때 사용하는 기술이다
+  (오라클의 CONNECT BY, 특정 DB만 사용하는 SQL 힌트 등)
+  
+- JDBC(Java DataBase Connectivity)란 DB에 접근이 가능한 Java에서 제공하는 api를 의미한다.
+  JDBC를 사용할 경우 JPA의 영속성 컨텍스트를 사용할 수 없으므로 JDBC를 이용하여 데이터 베이스의 내용을 수정할 경우
+  영속성 컨텍스트를 위해서 강제로 플러시를 해야된다.
+  (JPQL이나 NativeQuery 같은 JPA 기술을 사용하여 쿼리를 전송할 경우 자동으로 flush가 된다)
+  
+  JPQL은 결국 SQL로 변환되어 DB에 전송된다.
+  
+  
+2. JPQL 문법 
+-  JPQL은 SQL문법과 유사하며 SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 같은 기능들을 제공한다
+   예) select m from Member as m where m.age > 20
+   
+   엔티티와 속성은 대소문자 구분이 가능하다 (Member, age 등)
+   JPQL 키워드는 대소문자 구분이 안된다 (SELECT, FROM, where 등)
+   엔티티 객체 지향 중심의 쿼리 언어이므로 JPQL은 엔티티의 이름을 사용한다 테이블 이름이 아니다 (Member)
+   별칭은 필수다
+   
+   COUNT / SUM / AVG / MAX / MIN 등 SQL에서 제공하는 기능들을 사용 가능하다.
+   
+-  TypeQuery란 반환 타입이 명확할 때 사용한다.
+   Query란 반환 타입이 명확하지 않을 때 사용한다.
+   예) TypeQuery<Member> query = em.createQuery("SELECT m FROM Member m", Member.class);
+       (JPQL로 Memebr Entity를 가져오므로 반환 타입이 명확하다 그러므로 TypeQuery를 사용한다)
+       
+       Query query = em.createQuery("SELECT m.username, m.age from Member m");
+       (JPQL로 Member의 username과 age를 가져오는데 어떤 값으로 반환할지 명확하지 않으므로 Query를 사용한다)
+       
+ - 결과 조회 API
+   JPA의 쿼리문 결과가 하나 이상일때 리스트 반환을 하는데
+   쿼리문 결과를 List로 전달받기 위해서 query.getResultList(); 메서드를 사용한다.
+   결과가 없을 경우 빈 리스트를 반환한다.
+   
+   JPA의 쿼리문 결과가 정확히 하나일 경우 단일 객체를 반환하는데
+   쿼리문 결과를 단일 객체로 전달받기 위해서 query.getSingleResult(); 메서드를 사용한다.
+   결과가 없으면 javax.persistence.NoResultException 에러를
+   결과가 있으면 javax.persistence.NonUniqueResultException 에러를 발생시킨다
+   
+- 파라미터 바인딩이란 쿼리문의 파라미터를 매칭시키는 문법이다
+  예) SELECT m FROM Member as m where m.username =:username 이라는 쿼리문이 있으면
+      쿼리문의 파라미터인 :username을 매칭시키기 위해서
+      query.setParameter("username", usernameParam); 이렇게 setParameter() 메서드를 이용하여 
+      쿼리문의 파라미터를 바인딩 시킨다.
+      
+      
+   
+   
+   
+   
+   
+  
+  
