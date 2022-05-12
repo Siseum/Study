@@ -61,11 +61,49 @@
       query.setParameter("username", usernameParam); 이렇게 setParameter() 메서드를 이용하여 
       쿼리문의 파라미터를 바인딩 시킨다.
       
-      
-   
-   
-   
-   
-   
+
+- 프로젝션이란 SELECT 절에 조회할 대상을 지정하는것을 의미한다
+  프로젝션 대상에는 엔티티 / 임베디드 타입 /스칼라 타입(숫자, 문자 등 기본 타입) 이 있다
+  엔티티 프로젝션을 하면 영속성 컨텍스트에서 관리된다
+  (엔티티가 영속성 컨텍스트에서 관리될 경우 Java 코드에서 수정하면 DB에 있는 내용도 수정된다)
   
+  엔티티를 프로젝션할 경우 묵시적인 join 쿼리가 발생하는데 
+  묵시적인 join 쿼리가 발생하면 유지보수 / 구조 파악에 어려울 수 있으므로
+  명시적인 join 쿼리를 만들어서 엔티티를 프로젝션(조회) 해야된다.
   
+  프로젝션으로 여러값을 조회할 경우 그 결과를 어떻게 받을지 3가지 방법이 있는데
+  
+  Query 타입으로 조회하여 Object로 전달받은 뒤 Object[]로 캐스팅하여 사용하는 방법이 있다
+  (Query query = em.createQuery("SELECT m.username, m.age from Member m");
+  
+  Object[] 타입으로 조회하여 사용하는 방법이 있다
+  
+  조회할 대상과 일치하는 DTO를 만들어서 해당 DTO 클래스에 조회 결과를 받는 방법이 있다
+  예) SELECT new jpabook.jpql.UserDTO(m.username, m.age) FROM Member m;
+  (여기서 주의할것은 DTO 사용시 패키지명을 포함한 전체 클래스명을 입력해야되고
+   순서와 타입이 일치하는 생성자가 필요하다)
+  (DTO란 Data Transfer Object로 계층 간 데이터를 교환하기 위해 사용하는 객체이고 
+   로직을 갖고있지 않고 getter/setter만 갖고있는 클래스이다)
+   
+   
+- JPA에서 페이징은 두 API로 추상화한다
+  setFirstResult(int startPosition); 메서드를 통해 조회 시작 위치를 설정한다 (0부터 시작)
+  setMaxResult(int maxResult); 메서드로 조회할 데이터 수를 설정한다
+   
+- Join이란 두 테이블을 하나의 테이블로 만드는것을 의미한다.
+
+  Inner Join이란 결합조건을 만족하는 데이터만을 선택해 두 테이블을 결합할때 사용하는 문법이다
+  (참조하려는 두 테이블의 교집합을 의미한다)
+  Inner Join에서 두 테이블 간 조인 조건을 만족하지 않는 행은 생략되어서 결과가 반환된다
+  
+  JPA에서는 SELECT m FROM Member m [INNER] JOIN m.team t 이런 식으로 Inner Join을 만든다
+  
+  Outer Join이란 결합 조건을 만족하지 않아도 특정 테이블의 데이터를 모두 선택해 두 테이블을 결합하는 문법이다.
+  (Inner Join에서는 결합 조건에 만족하지 않으면 내용을 생략했는데 Outer Join은 기준이 되는 테이블의 내용을 모두 결합한다)
+  
+  JPA에서는 SELECT m FROM Member m LEFT [OUTER] JOIN m.team t 이런식으로 Outer Join을 만든다.
+  
+  세타 조인이란 결합조건에 만족하는 두 테이블의 데이터를 갖고 카테이션 곱으로 결합하여 새로운 테이블로 만드는 Join을 의미한다.
+  select count(m) from Member m, Team t where m.username = t.name 이런식으로 세타 조인을 만든다.
+  
+
