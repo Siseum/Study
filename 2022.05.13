@@ -173,6 +173,20 @@
     그러므로 @BatchSize() 어노테이션을 이용해 N+1 문제를 해결한다
     (@BatchSize 어노테이션은 연관된 엔티티를 조회할때 지정된 size만큼 SQL의 IN절을 사용해서 조회한다)
   
+
+7. 다형성 쿼리
+- JPA에서 type 키워드란 조회 대상을 특정 자식 엔티티로 한정하는 키워드이다
+  예) Item 중에서 Book, Movie를 조회해라
+  JPQL) SELECT i FROM Item i WHERE type(i) IN (Book, Movie);
+  SQL) SELECT i FROM i WHERE i.DTYPE in ('B', 'M');
+  (SQL에서는 type키워드가 DTYPE으로 변경된다)
   
-  
+  JPA에서 TREAT 키워드란 자바의 타입 캐스팅과 비슷하다.
+  상속 구조에서 부모 타입을 특정 자식 타입으로 다룰 때 사용한다.
+  FROM, WHERE, SELECT(하이버네이트 지원)에서 사용이 가능하다
+  예) 부모인 Item과 자식 Book이 있다
+  JPQL) SELECT i FROM Item i WHERE TREAT(i as Book).author = 'kim';
+  SQL) SELECT i.* FROM Item i WHERE i.DTYPE='B' and i.author = 'kim';
+  (SQL에서 TREAT 키워드가 DTYPE으로 변경된다)
    
+
