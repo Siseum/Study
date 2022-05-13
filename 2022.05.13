@@ -75,6 +75,16 @@
 
   NULLIF란 두 값이 같으면 null 반환, 다르면 첫번째 값을 반환한다
   예) 사용자 이름이 '관리자'면 null을 반환하고 나머지는 본인의 이름을 반환
-  SELECT NULLIF(m.username, '관리자') 
+  SELECT NULLIF(m.username, '관리자') FROM Member m;
+  
+- JPQL에서는 SQL이 지원하는 기본 함수들을 사용할 수 있다
+  CONCAT / SUBSTRING / TRIM / LOWER, UPPER / LENGTH / LOCATE / ABS, SQRT, MOD / SIZE, INDEX 등
+
+- JPQL에서는 사용자 정의 함수를 호출할 수 있다
+  하이버 네이트에서 사용자 정의 함수를 호출할려면 데이터베이스 방언에 해당 함수를 등록해야된다
+  (사용하는 DB 방언을 상속받고 사용자 정의 함수를 등록해야 한다)
+  
+  예) SELECT FUNCTION('group_concat', i.name) from Item i;
+  
   
   
