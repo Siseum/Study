@@ -1,0 +1,66 @@
+# 2022 05 17 Study
+
+TODO List를 만들고나서 그에 대한 리뷰
+
+1. Model이란 개발 도메인에서 사용되는 각각의 Object를 의미한다
+   Model을 TodoEntity / TodoRequest / TodoResponse로 정의한다
+   (도메인이란 해결하고자 하는 문제의 영역을 의미한다)
+   
+ - TodoEntity Model은 Database와 데이터를 주고받을 객체를 의미한다
+   TodoEntity에 @Entity 어노테이션을 추가하여 Jpa를 이용하여 테이블과 매핑할 클래스임을 설정한다.
+   기본 키인 Long id에 @GeneratedValue 어노테이션을 추가하여 기본 키 생성을 데이터 베이스가 하도록 설정하였다
+   (@GeneratedValue 어노테이션의 전략에 GenerationType.IDENTITY로 설정하였는데 
+   GenerationType.IDENTITY 전략은 commit하는 시점이 아닌 EntityManager.persist() 하는 시점에 insert sql문을 실행하여 데이터를 찾아온다
+   그 이유는 영속성 컨텍스트는 1차 캐쉬에서 엔티티들을 기본 키값으로 관리하는데 GenerationType.IDENTITY전략을 사용할 경우
+   데이터 베이스가 기본 키값을 담당하므로 영속성 컨텍스트에서 기본 키값을 알 수 없다 그러므로 EntityManager.persist() 하는 시점에
+   sql문을 실행해서 데이터를 찾아온다는 특징이 있다 그러므로 sql문을 모아서 전달할 수 없다는 단점이 있다)
+   
+   TodoEntity 맴버 변수 order가 있는데 데이터 베이스의 order 키워드와 곂치므로 @Column(nmae = "todoOrder"); 으로 이름을 변경해줘야된다.
+   
+-  TodoRequest Model은 클라이언트에서 보낼 데이터와 매핑할 클래스를 정의하였다.
+-  TodoResponse Model은 Service에서 처리한 데이터들을 View로 내보내기 위한 클래스를 정의하였다.
+
+
+2. Repository란 데이터 베이스와 데이터를 주고 받기 위한 인터페이스를 정의한것을 의미한다
+   JpaRepository를 상속받아 TodoRepository 인터페이스를 생성하여서 Jpa를 사용할 수 있도록 하였다.
+   
+   
+3. Service란 Business 로직을 담당하는 부분을 의미한다.
+   TodoService 클래스를 생성하여 Service를 구현하였다
+   TodoService에서는 데이터 베이스를 활용하여 비즈니스 로직을 처리해야되므로
+   TodoRepository 클래스의 인스턴스를 맴버 변수로 선언하였다.
+   
+-  toto 리스트 목록에 아이템을 추가하는 메서드인 add() 메서드에서 
+   todo 리스트에 저장할 내용을 TodoRequest를 인자로 전달받아 
+   todoRepository.save() 함수를 이용하여 todo 리스트(데이터 베이스)에 todoEntity를 저장하였다
+   
+-  todo 리스트 목록에서 아이디로 엔티티를 찾는 searchById 메서드에서
+   todoRepository.findById() 메서드로 아이디에 해당되는 엔티티를 찾도록 구현하였다
+   (findById() 메서드는 optional로 반환되는데 optional에서 null일 경우 에러를 리턴해야되므로
+    orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)); 로 찾아온 엔티티가 null일 경우 
+    에러를 발생하도록 하였다.
+    
+-   todo 리스트 목록 전체를 반환하는 searchAll() 메서드를 todoRepository.findAll() 함수로 구현하였다.
+    (findAll() 메서드는 list로 반환된다는 특징이 있다)
+    
+-   특정 id로 todo 리스트 목록에 있는 todoEntity를 수정하는 updateById() 메서드를 구현하였다
+    (Jpa에서 entity 수정은 todoRepository.save() 메서드로 수정하였다.)
+    
+-   특정 id나 todo 리스트 목록 전체를 삭제하는 deleteById() 메서드와 deleteByAll() 메서드를
+    todoRepository.deleteById() / todoRepository.deleteAll() 메서드로 구현하였다.
+    
+    
+4. Controller
+- Controller는 사용자의 요청을 처리하고 Mvc의 Model과 View사이를 중개하는 역할을 한다.
+- 다른 도메인 서버에서 다른 서버의 url을 호출할 경우 보안상의 이유로 
+  자신과 동일한 도메인에서만 http 요청을 보내도록 제어하고 에러를 발생시키는 이슈가 크로스 도메인 이슈라고 한다.
+  크로스 도메인 이슈를 해결하기 위해 @CrossOrigin 어노테이션을 추가한다
+  (@CrossOrigin 어노테이션으로 다른 서버에서 url을 접근하도록 하거나 특정 url에서만 접근이 가능하도록 설정할 수 있다)
+  
+- Controller의 반환값으로 json을 반환하기 위해 @RestController 어노테이션을 사용하였고
+  status 코드와 같이 반환하기 위해 ResponseEntity<>로 반환 타입을 설정하였다.
+  
+  update 메서드에서는 @PutMapping이 아닌 @PatchMapping을 사용하였는데
+  HTTP Put 메서드는 리소스의 모든것을 업데이트한다.
+  HTTP Patch 메서드는 리소스의 일부분만 업데이트 한다.
+
