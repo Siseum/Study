@@ -1,0 +1,65 @@
+# 2022 05 19 
+
+게시판을 만들고 나서 그에 대한 리뷰
+
+1. Database(mysql)과 SpringBoot를 연동시키기 위해 application.properties를 설정한다.
+   DataSource란 DB와 Spring의 연결을 관리해주는 객체이다
+   
+   DAO(Data Access Object)란 데이터 베이스의 data에 접근하는 객체를 의미한다.
+   DataBase에 접근 하기 위한 로직과 비즈니스 로직을 분리하기 위해 사용한다.
+   
+   DTO(Data Transfer Object)란 계층 간 데이터 교환을 하기 위해 사용하는 객체이다
+   DTO는 로직을 가지지 않는 순수한 데이터 객체(getter/setter)만 가진 클래스이다.
+   
+   VO(Value Object)란 값 오브젝트로써 값을 위해 쓰입니다 
+   Read-Only가 특징이다 (사용하는 도중에 변경이 불가능하며 오직 읽기만 가능하다)
+   DTO와 유사하지만 DTO는 Setter를 가지고 있어 변할 수 있다는 특징이 있다
+   
+
+2. 데이터 베이스와 연동할 객체인 Entity 클래스를 만든다
+   BoardEntity 클래스는 id, title, contents로 구성하였다
+   @Entity 어노테이션으로 해당 클래스를 데이터 베이스와 연동할 Entity로 설정하였고 
+   (엔티티란 저장되고 관리되어야할 데이터의 집합을 의미한다)
+   @Table 어노테이션으로 데이터베이스의 테이블과 연동하도록 설정하였다.
+   
+   게시판에서 입력받은 데이터를 처리하기 위해 BoardRequest 클래스를 생성하였다
+   게시판에서 입력받을 데이터는 제목과 내용이므로 title, contents로 구성하였다.
+   
+   
+3. Spring Data Jpa를 이용하기 위해 BoardRepository 인터페이스를 만들고
+   JpaRepository 인터페이스를 상속받도록 구현하였다.
+   
+   Jpa(Java Persistence API)란 자바 ORM을 위한 기술 표준을 의미한다
+   Jpa를 구현하는 기술로는 Hibernate 등이 있다
+   
+   ORM(Object-Relational Mapping)이란 자바의 객체와 관계형 DB를 매핑하는것을 의미한다.
+   
+   Spring Data Jpa란 Jpa를 한 단계 더 추상화 시켜 개발의 용이성을 상당히 올려주는 인터페이스를 의미한다.
+   
+
+4. 게시판의 비즈니스 로직을 처리하는 BoardService 클래스를 생성하였다
+   게시판은 write / searchAll / SearchById / deleteById / searchList 메서드를 구현하였다.
+   
+   각 메서드는 전달받은 BoardRequest를 BoardEntity로 값을 수정하여 
+   BoardRepository를 통해 BoardEntity를 저장하도록 하였다
+   
+   
+5. 게시판에서 사용자의 요청을 처리할 BoardController 클래스를 만들었다
+   @Controller 어노테이션이란 주로 View를 반환하는데 사용하는 어노테이션이다
+   (View만 / 데이터만 / View + 데이터 둘다 반환가능하다)
+   Model 객체를 이용하면 View에 데이터 전달이 가능하다.
+   @Controller 어노테이션이 View를 반환할 경우 ViewResolver가 사용되어
+   ViewResolver가 설정에 맞는 View를 찾아 반환한다.
+   
+   @ResponseBody 어노테이션을 이용하면 데이터 반환이 가능하다.
+   (주로 Json 형태로 객체를 반환하며 데이터만 반환이 가능하다)
+   
+   @Controller와 @RestController의 차이는
+   Controller에서 jsp나 html같은 view를 전달하기 위해 @Controller를 사용했지만
+   최근에는 프론트엔드 / 백엔드를 따로 두므로 @RestController를 json으로 Data만을 편리하게 전달하기 위해 사용한다.
+   
+   @RequestBody란 HTTP 요청의 Body 내용을 자바 객체로 매핑하는 역할을 한다.
+   @ResponseBody란 자바 객체를 HTTP 요청의 Body 내용으로 매핑하는 역할을 한다.
+   
+   
+   
