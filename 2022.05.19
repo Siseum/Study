@@ -62,4 +62,18 @@
    @ResponseBody란 자바 객체를 HTTP 요청의 Body 내용으로 매핑하는 역할을 한다.
    
    
-   
+6. Pagination
+- Pagination이란 게시글을 일정 수로 나누어 페이지화 한 것을 의미한다.
+  Pageable은 Pagination을 처리하기 위한 정보를 갖는 인터페이스를 의미한다.
+  (Pageable을 통해 Spring Jpa에서 DB 쿼리에 쉽고 유연하게 limit 쿼리를 사용할 수 있게 해준다)
+  @PageableDefault 어노테이션은 Pageable의 설정을 기본값 설정해주는 어노테이션이다
+  (@PageableDefault 어노테이션을 통해 페이지 수 / 정렬 방식 등을 설정할 수 있다)
+  
+  Pageable을 매개변수로 Spring Data Jpa를 사용할 경우 Page<Object> 형태로 반환이 된다.
+  
+ 
+7. thymeleaf 문법
+- thymeleaf
+  
+  
+  
