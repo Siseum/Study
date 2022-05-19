@@ -73,7 +73,30 @@
   
  
 7. thymeleaf 문법
-- thymeleaf
+- thymeleaf 문법의 특징은 html 태그 안에 th 문법을 추가하는 형태이다
+  표현식 : <div th:[속성명]="서버에서 받는 값 및 조건식"/>
   
+  ${...} 표현식은 컨트롤러에서 전달받은 변수에 접근할 수 있으며 th:[속성명] 내에서만 사용할 수 있다.
+  @{...} 표현식은 링크 url을 표현하는데 사용하며 th:[속성명] 내에서만 사용할 수 있다.
   
+  th:text 
+  태그 안에 있는 텍스트를 서버에서 전달 받은 값에 따라 표현하고자 할 때 사용한다
   
+  th:utext
+  서버에서 전달 받은 값에 html 태그가 있다면 태그 값을 반영해서 표시해준다
+  
+  th:value
+  엘리먼트들의 value 값을 지정할 수 있다.
+  
+  th:each 
+  반복문이 필요한 경우 사용한다.
+  
+  th:href 
+  하이퍼 텍스트 링크를 설정할 떄 사용한다.
+  
+  #numbuers.sequence(from, to)
+  타임리프에서 컬렉션 없이 단순 반복 처리 하고 싶을 떄 사용한다.
+  예) <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}"> </th:block>
+ 
+ 
+ 
