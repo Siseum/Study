@@ -145,3 +145,67 @@
   상품의 id가 null이 아닐 경우 이미 데이터 베이스에 저장된 엔티티를 수정한다 보고, merge() 메서드를 실행한다.
   그리고 상품 서비스 클래스 구현한다.
   
+  
+  주문 엔티티)
+  주문 엔티티에서 배송 엔티티와 상품주문 엔티티를 관리하므로 Cascade 옵션을 설정하여
+  주문 엔티티가 영속될 경우 배송 엔티티와 상품주문 엔티티도 함께 영속화 되도록 설정하였다 (cascade = CascadeType.ALL)
+  (Cascade란 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶을때 사용하는 옵션이다)
+  
+  주문 엔티티에서 주문 생성 메서드를 createOrder() 메서드를 생성하는데
+  Member, Delivery, OrderItem 을 인자로 전달받아
+  Order를 생성하여 Member를 설정하고 Delivery를 설정한다
+  그리고 Order의 OrderItem과 OrderItem의 Order를 설정한다
+  마지막으로 order의 상태를 OrderStatus.ORDER로 설정하고 시각을 설정한다.
+  
+  주문 취소 메서드에서 해당 배송의 상태가 완료였다면 예외를 발생시켜 취소를 못하게 하였고
+  배송의 상태가 완료가 아니라면 해당 주문의 배송상태를 CANCEL로 변경한다
+  그리고 Order의 OrderItem들의 수량을 주문 취소한 만큼 되돌려 놓았다.
+  
+  주문의 전체 가격을 조회하는 getTotalPrice() 메서드에서는
+  OrderItem들의 리스트를 조회하여 총 가격을 구했다.
+  
+  
+  주문 서비스)
+  주문을 할 경우 Order() 메서드에서 Member와 Item의 ID로 해당 Member, Item 엔티티를 찾았고
+  Member의 정보로 Delivery 엔티티를 생성하였다
+  그리고 아이템을 갖고 OrderItem을 생성하였고
+  (OrderItem을 생성할때 해당 Item의 수량을 주문 수량만큼 감소시킨다)
+  Member, delivery, orderItem으로 Order를 생성하였다
+  마지막으로 생성한 Order를 save() 메서드로 저장하였다
+  그리고 해당 order의 id를 반환하였다
+  
+  주문 취소를 할 경우 cancelOrder() 메서드에서 orderId로 해당 order를 찾아서
+  order.cancel() 메서드를 실행하였다. 
+  (order.cancel() 메서드에서 해당 orderItem 목록들을 순회하여 orderItem의 개수를 주문 취소한 수량만큼 증가시키고
+  해당 order의 상태를 CANCEL로 변경하였다)
+  
+  주문 서비스 테스트)
+  주문 서비스 테스트에서 상품주문을 할 경우 
+  주문의 상태가 ORDER / 주문한 상품 종류 수 / 주문 총 가격 / 주문 재고가 제대로 됐는지를 테스트 하였다
+  
+  상품 주문시 재고수량이 초과될 경우 Exception이 발생해야되는데 
+  재고 수량을 초과한 주문을 테스트하여 Exception이 발생했는지를 테스트 하였다
+  (assertThrows() 메서드를 사용하여 Exception이 발생했는지를 확인하였다)
+  
+  주문 취소를 할 경우 주문의 상태가 CANCEL이 되어야 하고 주문이 취소된 상품의 제고가 증가됐는지 테스트 하였다
+  
+  
+3. 동적 쿼리
+   검색을 하는 findAll() 메서드에서 검색 조건에 따라 동적으로 쿼리를 생성하여 주문 엔티티를 조회할려고 한다
+   (해당 회원의 주문 / 주문 상태에 따라서 등)
+   
+   동적 쿼리를 만드는 방법에는 JPQL로 처리하는 방법이 있다
+   하지만 JPQL 쿼리를 문자로 생성하기는 번거롭고 실수로 인한 버그가 충분히 발생할 수 있다는 문제점이 있다
+   
+   동적쿼리를 만드는 방법에는 JPA Criteria로 처리하는 방법이 있다
+   하지만 JPA Criteria는 JPA 표준 스펙이지만 실무에서 사용하기에는 너무 복잡하다 그래서 잘 사용하지 않는다
+   
+   그래서 동적쿼리를 만들때는 QueryDsl을 사용하여 만든다.
+   
+   
+   
+   
+  
+  
+  
+  
