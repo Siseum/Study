@@ -98,5 +98,11 @@
    주문을 취소하는 메서드인 cancelOrder() 메서드를 생성하였는데 
    주문의 id를 인자로 전달받아 주문을 취소하도록 하였다.
    
+   @RequestParam 어노테이션이란 URL Parameter를 전달받기 위해 사용하는 어노테이션이다
+   @RequestBody 어노테이션이란 웹 페이지에서 전달한 Json 파일을 특정 클래스 객체로 변환시키는 어노테이션이다
+   (@RequestBody 어노테이션은 바인딩이 아닌 변환을 시키는 것이므로 Setter가 없어도 변환이 된다)
+   @ModelAttribute 어노테이션이란 웹 페이지에서 전달한 Json 파일이나 URL Parameter를 특정 객체나 변수에 바인딩시키는 어노테이션이다
+   (@ModelAttribute 어노테이션은 변환이 아닌 바인딩이므로 Setter가 없을 경우 바인딩이 되지 않는다)
+   
    
    
